@@ -12,10 +12,22 @@ set textwidth=80
 set title
 set showmatch
 set cursorline
+set clipboard=unnamed
+set backupdir=~/.vimbackup
+set directory=~/.vimbackup
 
 " Run current file in Python
 :map <F9> :!python3 %<CR>
 :map <F8> :!python3 -i %<CR>
+:map <F7> :!python3 -m doctest -v %<CR>
+" Compile LaTeX
+:map <leader>d :!pandoc -s % -o %.pdf<CR>
+" Compile or Run Java
+:map <leader>jc :!javac %<CR>
+:map <leader>jr :!javac %; java %:r<CR>
+
+" CS61B Specific Commands
+:map <leader>mc :!make check<CR>
 
 " Cursor wrapping
 inoremap <Down> <C-o>gj
@@ -23,7 +35,7 @@ inoremap <Up> <C-o>gk
 
 " Terminal colors
 set langmenu=none
-set term=builtin_ansi
+set term=xterm-256color
 let &t_Co=256
 
 " Tabs, scroll offset
@@ -35,8 +47,8 @@ set autoindent smartindent
 set scrolloff=5
 
 " Color scheme
-colors zenburn
-colorscheme zenburn
+colors solarized
+colorscheme solarized
 syntax on
 filetype plugin indent on
 
@@ -87,14 +99,49 @@ set statusline+=%3*total:%4*%L\
 " End statusline
 
 " Nerd Tree jazz
-autocmd vimenter * NERDTree
-autocmd vimenter * if !argc() | NERDTree | endif
-autocmd vimenter * :wincmd l " Switch to non-NerdTree window on open
-map <C-n> :NERDTreeToggle<CR>
+" temp commented out auto-opening nerdtree
+"autocmd vimenter * NERDTree
+"autocmd vimenter * if !argc() | NERDTree | endif
+"autocmd vimenter * :wincmd l " Switch to non-NerdTree window on open
+map <leader>n :NERDTreeToggle<CR>
 autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTreeType") && b:NERDTreeType == "primary") | q | endif
+
+" taglist jazz
+
+map <leader>m :TagbarToggle<CR>
+autocmd bufenter * if (winnr("$") == 1 && exists("b:TagbarType") && b:TagbarType == "primary") | q | endif
+
 
 " Spell check
 if v:version >= 700
     autocmd BufNewFile,BufRead *.txt setlocal spell spelllang=en
 endif
 
+" Color parentheses always-on
+au VimEnter * RainbowParenthesesToggle
+au Syntax * RainbowParenthesesLoadRound
+au Syntax * RainbowParenthesesLoadSquare
+au Syntax * RainbowParenthesesLoadBraces
+map <leader>p :RainbowParenthesesToggle<CR>
+
+" Vim-Latex Settings
+set grepprg=grep\ -nh\ $*
+let g:tex_flavor='latex'
+let g:Tex_DefaultTargetFormat='pdf'
+
+" Curly brace auto-fill for Java
+inoremap {      {}<Left>
+inoremap {<CR>  {<CR>}<Esc>O
+inoremap {{     {
+inoremap {}     {}
+
+
+" Disable arrow keys; force to use hjkl:
+inoremap  <Up>     <NOP>
+inoremap  <Down>   <NOP>
+inoremap  <Left>   <NOP>
+inoremap  <Right>  <NOP>
+noremap   <Up>     <NOP>
+noremap   <Down>   <NOP>
+noremap   <Left>   <NOP>
+noremap   <Right>  <NOP>
