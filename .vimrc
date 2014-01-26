@@ -15,6 +15,11 @@ set cursorline
 set clipboard=unnamed
 set backupdir=~/.vimbackup
 set directory=~/.vimbackup
+set syntax=on
+let mapleader=" "
+
+" Color the column after text-width
+set colorcolumn=+1
 
 " Run current file in Python
 :map <F9> :!python3 %<CR>
@@ -47,9 +52,9 @@ set autoindent smartindent
 set scrolloff=5
 
 " Color scheme
-colors solarized
+syntax enable
+set background=dark
 colorscheme solarized
-syntax on
 filetype plugin indent on
 
 " Line numbers
@@ -86,10 +91,6 @@ set statusline+=%6*%{&readonly?'\ (read-only)\ ':'\ '}%3*
 set statusline+=%3*fenc:%4*%{strlen(&fenc)?&fenc:'none'}%3*\ \ 
 set statusline+=%3*ff:%4*%{&ff}%3*\ \ 
 set statusline+=%3*ft:%4*%{strlen(&ft)?&ft:'<none>'}\ \ 
-set statusline+=%3*tab:%4*%{&ts}
-set statusline+=%3*,%4*%{&sts}
-set statusline+=%3*,%4*%{&sw}
-set statusline+=%3*,%4*%{&et?'et':'noet'}\ \ 
 set statusline+=%<%3*pwd:%4*%{getcwd()}\ \ 
 set statusline+=%9*%=
 set statusline+=%3*col:%4*%c\ \ 
@@ -107,7 +108,7 @@ map <leader>n :NERDTreeToggle<CR>
 autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTreeType") && b:NERDTreeType == "primary") | q | endif
 
 " taglist jazz
-
+autocmd vimenter * TagbarToggle
 map <leader>m :TagbarToggle<CR>
 autocmd bufenter * if (winnr("$") == 1 && exists("b:TagbarType") && b:TagbarType == "primary") | q | endif
 
